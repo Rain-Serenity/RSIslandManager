@@ -138,6 +138,14 @@ public final class RSIslandManager extends JavaPlugin {
 
             }
         }
+        if (this.getConfig().getBoolean("CoralBoneMeal")) {
+            try {
+                new CoralBoneMeal();
+                getLogger().info("Enabled coral bone meal.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (this.getConfig().getBoolean("SetGameRule")) {
             try {
 

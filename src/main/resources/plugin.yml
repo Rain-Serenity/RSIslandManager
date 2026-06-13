@@ -7,4 +7,11 @@ authors: [Chosen_1st]
 commands:
   rim:
     usage: /rim <recipemenu|tips|slime>
-    description: RSIslandManager 主命令 - 合成配方/小提示/史莱姆区块检测
+    description: RSIslandManager 主命令
+    permission: rsislandmanager.rim
+    permission-message: §c你没有权限使用此命令
+
+permissions:
+  rsislandmanager.rim:
+    default: true
+    description: 允许使用 /rim 命令

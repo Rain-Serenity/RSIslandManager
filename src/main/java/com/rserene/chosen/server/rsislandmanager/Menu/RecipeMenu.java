@@ -237,7 +237,7 @@ public class RecipeMenu {
         if (list == null || list.isEmpty()) return buildMain();
         SInfo cur = list.get(0);
 
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §e锻造 " + name(result) + " ]"));
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造 " + name(result) + " ]"));
         fill(inv);
         setSlot(inv, 4, Material.SMITHING_TABLE, "§6" + name(result) + " §7(§e1§7/§e" + list.size() + "§7)", "§7原料自动切换");
         inv.setItem(20, mkItem(cur.t(), "§7模板: " + name(cur.t()), ""));
@@ -257,7 +257,7 @@ public class RecipeMenu {
 
     // ===================== 普通详情 =====================
     public static Inventory buildSmithing(SInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §e锻造台 ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造台 ]")); fill(inv);
         setSlot(inv, 4, Material.SMITHING_TABLE, "§6锻造台合成", "§7将材料放入锻造台对应栏位");
         inv.setItem(20, mkItem(info.t(), "§7模板: " + name(info.t()), ""));
         inv.setItem(21, mkItem(Material.GREEN_STAINED_GLASS_PANE, "§a+", ""));
@@ -306,7 +306,9 @@ public class RecipeMenu {
         inv.setItem(20, mkItem(info.i(), "§7输入: " + name(info.i()), "§7放入" + info.t() + "上格"));
         inv.setItem(22, mkItem(Material.LIME_STAINED_GLASS_PANE, "§a烧炼", ""));
         inv.setItem(24, mkItem(info.r(), "§e输出: " + name(info.r()), ""));
-        inv.setItem(38, mkItem(Material.COAL, "§6燃料", "§7使用任意燃料"));
+        if (!"营火".equals(info.t())) {
+            inv.setItem(38, mkItem(Material.COAL, "§6燃料", "§7使用任意燃料"));
+        }
         setSlot(inv, SLOT_BACK, Material.OAK_DOOR, "§c< 返回", "");
         setSlot(inv, SLOT_CLOSE, Material.BARRIER, "§c关闭", ""); return inv;
     }
