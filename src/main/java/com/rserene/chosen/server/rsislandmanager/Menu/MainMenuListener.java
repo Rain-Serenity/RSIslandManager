@@ -1,28 +1,62 @@
 package com.rserene.chosen.server.rsislandmanager.Menu;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Random;
-
+/**
+ * 合成配方菜单交互 & 自动循环管理
+ */
 public class MainMenuListener implements Listener {
-    public static final Random RANDOM = new Random();
+
+    private static final Component TITLE_COMP = Component.text(RecipeMenu.TITLE);
+
     @EventHandler
-    public void onClick(InventoryClickEvent e){
-        Player player = (Player) e.getWhoClicked();
-        if (player.getOpenInventory().title().equals(Component.text(RecipeMenu.TITLE))) {
-            e.setCancelled(true);
-            ItemStack clickedItem = e.getCurrentItem();
-            if (clickedItem == null) {
+    public void onClick(InventoryClickEvent event) {
+        Component titleComp = event.getView().title();
+        boolean isMain = titleComp.equals(TITLE_COMP);
+        boolean isDetail = !isMain && titleComp.toString().contains("📖");
+        if (!isMain && !isDetail) return;
+
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem().getType() == Material.AIR) return;
+
+        if (isMain) {
+            if (event.getSlot() == RecipeMenu.SLOT_CLOSE) { player.closeInventory(); return; }
+            Inventory detail = RecipeMenu.getDetail(event.getSlot(), player);
+            if (detail != null) player.openInventory(detail);
+            return;
+        }
+
+        if (isDetail) {
+            int slot = event.getSlot();
+            if (slot == RecipeMenu.SLOT_BACK) {
+                RecipeMenu.stopCycling(player);
+                player.openInventory(RecipeMenu.buildMain());
                 return;
             }
-            if (clickedItem.getItemMeta().displayName().equals(Component.text(RecipeMenu.INGOT))) {
+            if (slot == RecipeMenu.SLOT_CLOSE) {
+                RecipeMenu.stopCycling(player);
                 player.closeInventory();
             }
+        }
+    }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+        if (!(event.getPlayer() instanceof Player player)) return;
+        // 只有关闭详情页（含 📖）才清理循环任务
+        // 不包括主菜单（避免从主菜单点进详情时误杀刚调度的任务）
+        if (event.getView().title().toString().contains("📖")) {
+            RecipeMenu.clearState(player);
         }
     }
 }

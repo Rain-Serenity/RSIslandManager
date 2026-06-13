@@ -16,24 +16,25 @@ import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
 
 import java.util.Objects;
 
-public class SlimeChunk implements CommandExecutor {
+public class SlimeChunk {
     public SlimeChunk() {
-        Objects.requireNonNull(Bukkit.getPluginCommand("Slime")).setExecutor(this);
+        // 构造时不再自注册命令，改为由 RimCommand 统一调用
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        long l = System.currentTimeMillis();
-        Player player = (Player) commandSender;
+    /**
+     * 执行史莱姆区块检测（供 RimCommand 调用）
+     * @param player 执行命令的玩家
+     */
+    public static void execute(Player player) {
+        long startTime = System.currentTimeMillis();
         World world = player.getLocation().getWorld();
         final int x = player.getLocation().getChunk().getX();
         final int blockY = player.getLocation().getBlockY();
         final int z = player.getLocation().getChunk().getZ();
 
+        // 延迟 30 秒后恢复原样
         Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(RSIslandManager.class), () -> {
-            if (!player.isOnline()) {
-                return;
-            }
+            if (!player.isOnline()) return;
             for (int i = x - 4; i < x + 5; i++) {
                 for (int j = z - 4; j < z + 5; j++) {
                     Chunk chunk = world.getChunkAt(i, j);
@@ -48,6 +49,8 @@ public class SlimeChunk implements CommandExecutor {
                 }
             }
         }, 30 * 20L);
+
+        // 立即将史莱姆区块标记为绿色
         BlockData blockData = Bukkit.createBlockData(Material.SLIME_BLOCK);
         for (int i = x - 4; i < x + 5; i++) {
             for (int j = z - 4; j < z + 5; j++) {
@@ -62,7 +65,6 @@ public class SlimeChunk implements CommandExecutor {
                 }
             }
         }
-        commandSender.sendMessage(Component.text("史莱姆区块寻找完毕" + " 共耗时" + (System.currentTimeMillis() - l) + "ms", NamedTextColor.GREEN, TextDecoration.BOLD));
-        return true;
+        player.sendMessage(Component.text("史莱姆区块寻找完毕" + " 共耗时" + (System.currentTimeMillis() - startTime) + "ms", NamedTextColor.GREEN, TextDecoration.BOLD));
     }
 }

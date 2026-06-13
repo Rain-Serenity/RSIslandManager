@@ -4,7 +4,7 @@ plugins {
 }
 // 设置项目的组名和版本号
 group = 'com.rserene.chosen.server'
-version = 'v4.0.0'
+version = 'v5.0.0'
 // 设置仓库 repositories
 repositories {
     mavenCentral()

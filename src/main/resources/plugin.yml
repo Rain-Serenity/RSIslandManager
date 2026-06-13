@@ -1,22 +1,10 @@
-
- name: RSIslandManager
- version: \${version}
- main: com.rserene.chosen.server.rsislandmanager.RSIslandManager
- api-version: 26.1
- folia-supported: true
- authors: [Chosen_1st]
- commands:
-   Slime:
-     usage: /Slime
-     description: Look The Slime Chunk
-     permission: rsislandmanager.slime
-     permission-message: 你没有权限
-     default: op
-   Tips:
-     usage: /Tips
-     description: Look Tips
-   Menu:
-     usage: /Menu
-     description: Open Menu
- scription: Open Menu
- 
+name: RSIslandManager
+version: 5.0.0
+main: com.rserene.chosen.server.rsislandmanager.RSIslandManager
+api-version: 26.1
+folia-supported: true
+authors: [Chosen_1st]
+commands:
+  rim:
+    usage: /rim <recipemenu|tips|slime>
+    description: RSIslandManager 主命令 - 合成配方/小提示/史莱姆区块检测

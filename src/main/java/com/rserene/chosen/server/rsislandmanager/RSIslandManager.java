@@ -1,8 +1,8 @@
 package com.rserene.chosen.server.rsislandmanager;
 
 import org.bukkit.*;
-import com.rserene.chosen.server.rsislandmanager.Menu.MainMenuCommand;
-import com.rserene.chosen.server.rsislandmanager.Menu.MainMenuListener;
+import com.rserene.chosen.server.rsislandmanager.Command.RimCommand;
+import com.rserene.chosen.server.rsislandmanager.Menu.*;
 import com.rserene.chosen.server.rsislandmanager.Tips.Synthesis;
 import com.rserene.chosen.server.rsislandmanager.Tips.SynthesisCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +21,7 @@ public final class RSIslandManager extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         this.saveDefaultConfig();
         if (this.getConfig().getBoolean("FirstSapling")) {
             try {
@@ -164,10 +165,9 @@ public final class RSIslandManager extends JavaPlugin {
             getLogger().info("Metrics Loading Successfully");
             Bukkit.getPluginManager().registerEvents(new MainMenuListener(), this);
             getLogger().info("Listener Register Successfully");
-            Objects.requireNonNull(Bukkit.getPluginCommand("Tips")).setExecutor(new SynthesisCommand());
-            Objects.requireNonNull(Bukkit.getPluginCommand("Tips")).setTabCompleter(new SynthesisCommand());
-            Objects.requireNonNull(Bukkit.getPluginCommand("Menu")).setExecutor(new MainMenuCommand());
-            Objects.requireNonNull(Bukkit.getPluginCommand("Menu")).setExecutor(new MainMenuCommand());
+            // 注册 /rim 主命令（含 recipemenu / tips / slime 子命令，支持 Tab 补全）
+            Objects.requireNonNull(Bukkit.getPluginCommand("rim")).setExecutor(new RimCommand());
+            Objects.requireNonNull(Bukkit.getPluginCommand("rim")).setTabCompleter(new RimCommand());
             getLogger().info("Command Loading Successfully");
             getLogger().info("RSIslandManager Loaded Successfully !");
         }
