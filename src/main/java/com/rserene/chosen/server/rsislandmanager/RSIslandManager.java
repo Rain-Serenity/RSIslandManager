@@ -1,8 +1,8 @@
 package com.rserene.chosen.server.rsislandmanager;
 
 import org.bukkit.*;
-import com.rserene.chosen.server.rsislandmanager.Command.RimCommand;
 import com.rserene.chosen.server.rsislandmanager.Menu.*;
+import com.rserene.chosen.server.rsislandmanager.Command.RimCommand;
 import com.rserene.chosen.server.rsislandmanager.Tips.Synthesis;
 import com.rserene.chosen.server.rsislandmanager.Tips.SynthesisCommand;
 import org.bukkit.plugin.java.JavaPlugin;
