@@ -171,14 +171,14 @@ public class MoreRecipe {
         );
         Bukkit.addRecipe(Grass_block);
 
-        ItemStack DIAMOND = new ItemStack(Material.DIAMOND);
-        NamespacedKey DIAMONDkey = new NamespacedKey(plugin, "DIAMOND_key");
-        ShapedRecipe DIAMONDrecipe = new ShapedRecipe(DIAMONDkey, DIAMOND);
-        DIAMONDrecipe.shape(" G ", "NBN", " G ");
-        DIAMONDrecipe.setIngredient('G', Material.GOLDEN_APPLE);
-        DIAMONDrecipe.setIngredient('N', Material.NETHERITE_INGOT);
-        DIAMONDrecipe.setIngredient('B', Material.BONE_BLOCK);
-        Bukkit.addRecipe(DIAMONDrecipe);
+        CampfireRecipe DIAMOND = new CampfireRecipe(
+            new NamespacedKey(plugin, "diamond_recipe"),
+            new ItemStack(Material.DIAMOND),
+            Material.POISONOUS_POTATO,
+            (float) 1.0,
+            300
+        );
+        Bukkit.addRecipe(DIAMOND);
 
         BlastingRecipe Sand = new BlastingRecipe(
             new NamespacedKey(plugin, "sand_recipe"),

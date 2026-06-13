@@ -20,7 +20,7 @@ import java.util.function.Function;
  */
 public class RecipeMenu {
 
-    public static final String TITLE = "§8⚒ §7自定义合成配方";
+    public static final String TITLE = "§7额外合成配方";
 
     public static final int SLOT_BACK  = 45;
     public static final int SLOT_CLOSE = 53;
