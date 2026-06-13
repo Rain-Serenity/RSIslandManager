@@ -3,7 +3,7 @@ plugins {
     id 'java'
 }
 // 设置项目的组名和版本号
-group = 'org.skydom.chosen.server'
+group = 'com.rserene.chosen.server'
 version = 'v4.0.0'
 // 设置仓库 repositories
 repositories {
@@ -19,11 +19,11 @@ repositories {
 }
 // 设置依赖 dependencies
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("com.mojang:authlib:4.0.43")
 }
 // 设置Java版本
-def targetJavaVersion = 17
+def targetJavaVersion = 25
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
