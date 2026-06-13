@@ -21,7 +21,7 @@ public class MainMenuListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         Component titleComp = event.getView().title();
         boolean isMain = titleComp.equals(TITLE_COMP);
-        boolean isDetail = !isMain && titleComp.toString().contains("📖");
+        boolean isDetail = !isMain && titleComp.toString().contains("§8[");
         if (!isMain && !isDetail) return;
 
         event.setCancelled(true);
@@ -53,9 +53,8 @@ public class MainMenuListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player player)) return;
-        // 只有关闭详情页（含 📖）才清理循环任务
-        // 不包括主菜单（避免从主菜单点进详情时误杀刚调度的任务）
-        if (event.getView().title().toString().contains("📖")) {
+        // 只有关闭详情页（含 §8[ ）才清理循环任务
+        if (event.getView().title().toString().contains("§8[")) {
             RecipeMenu.clearState(player);
         }
     }

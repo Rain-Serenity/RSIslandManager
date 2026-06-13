@@ -128,6 +128,24 @@ public class MoreRecipe {
         );
         Bukkit.addRecipe(Nether_INGOT_Iron);
 
+        SmithingTransformRecipe Nether_INGOT_Copper = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "Netherc_INGOT_recipe"),
+            new ItemStack(Material.NETHERITE_INGOT),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.COPPER_INGOT),
+            new RecipeChoice.MaterialChoice(Material.BLACK_DYE)
+        );
+        Bukkit.addRecipe(Nether_INGOT_Copper);
+
+        SmithingTransformRecipe Nether_INGOT_Brick = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "Netherd_INGOT_recipe"),
+            new ItemStack(Material.NETHERITE_INGOT),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.NETHER_BRICK),
+            new RecipeChoice.MaterialChoice(Material.BLACK_DYE)
+        );
+        Bukkit.addRecipe(Nether_INGOT_Brick);
+
         SmithingTransformRecipe COPPER_INGOT = new SmithingTransformRecipe(
             new NamespacedKey(plugin, "COPPER_INGOT_recipe"),
             new ItemStack(Material.COPPER_INGOT),
@@ -136,6 +154,33 @@ public class MoreRecipe {
             new RecipeChoice.MaterialChoice(Material.ORANGE_DYE)
         );
         Bukkit.addRecipe(COPPER_INGOT);
+
+        SmithingTransformRecipe COPPER_INGOT_Iron = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "COPPER_INGOT_Iron_recipe"),
+            new ItemStack(Material.COPPER_INGOT),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.IRON_INGOT),
+            new RecipeChoice.MaterialChoice(Material.ORANGE_DYE)
+        );
+        Bukkit.addRecipe(COPPER_INGOT_Iron);
+
+        SmithingTransformRecipe COPPER_INGOT_Gold = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "COPPER_INGOT_Gold_recipe"),
+            new ItemStack(Material.COPPER_INGOT),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.GOLD_INGOT),
+            new RecipeChoice.MaterialChoice(Material.ORANGE_DYE)
+        );
+        Bukkit.addRecipe(COPPER_INGOT_Gold);
+
+        SmithingTransformRecipe COPPER_INGOT_Brick = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "COPPER_INGOT_Brick_recipe"),
+            new ItemStack(Material.COPPER_INGOT),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.NETHER_BRICK),
+            new RecipeChoice.MaterialChoice(Material.ORANGE_DYE)
+        );
+        Bukkit.addRecipe(COPPER_INGOT_Brick);
 
         StonecuttingRecipe GravelStonecuttingRecipe = new StonecuttingRecipe(
             new NamespacedKey(plugin, "GravelStonecuttingRecipe_recipe"),
@@ -167,7 +212,7 @@ public class MoreRecipe {
             new ItemStack(Material.GRASS_BLOCK),
             RecipeChoice.empty(),
             new RecipeChoice.MaterialChoice(Material.DIRT),
-            new RecipeChoice.MaterialChoice(Material.GRASS_BLOCK)
+            new RecipeChoice.MaterialChoice(Material.SHORT_GRASS)
         );
         Bukkit.addRecipe(Grass_block);
 
