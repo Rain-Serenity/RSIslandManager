@@ -62,8 +62,8 @@ public class RimCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(Component.text("§f我们新增了一些自定义合成表", NamedTextColor.AQUA, TextDecoration.BOLD));
                 sender.sendMessage(Component.text("§f输入 §b/rim recipemenu §f查看所有自定义配方", NamedTextColor.AQUA, TextDecoration.BOLD));
                 sender.sendMessage(Component.text("§f您也可以在 Wiki 找到更多信息", NamedTextColor.AQUA, TextDecoration.BOLD));
-                sender.sendMessage(Component.text("§b§nhttps://Wiki.Skydom.org/", NamedTextColor.AQUA, TextDecoration.BOLD));
-                sender.sendMessage(Component.text("§f如果您是新玩家，请输入 §b/is §f创建属于你自己的岛屿", NamedTextColor.AQUA, TextDecoration.BOLD));
+                sender.sendMessage(Component.text("§b§nhttps://www.RSerene.com/", NamedTextColor.AQUA, TextDecoration.BOLD));
+                sender.sendMessage(Component.text("§f如果您是新玩家，请输入 §b/plot auto §f创建属于你自己的岛屿", NamedTextColor.AQUA, TextDecoration.BOLD));
                 sender.sendMessage(Component.text(""));
                 sender.sendMessage(Component.text("§b§l=================================="));
                 return true;
