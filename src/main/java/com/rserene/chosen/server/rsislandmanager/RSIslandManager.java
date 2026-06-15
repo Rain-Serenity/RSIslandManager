@@ -184,8 +184,5 @@ public final class RSIslandManager extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.clearRecipes();
-        // 清除合成表
-        saveConfig();
-        // 保存配置文件
     }
 }

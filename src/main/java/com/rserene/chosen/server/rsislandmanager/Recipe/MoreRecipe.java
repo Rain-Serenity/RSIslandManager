@@ -313,6 +313,15 @@ public class MoreRecipe {
         FLINTRecipe.addIngredient(1, Material.WOODEN_SHOVEL);
         Bukkit.addRecipe(FLINTRecipe);
 
+        ItemStack TEMPLATE = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+        NamespacedKey TEMPLATE_KEY = new NamespacedKey(plugin, "netherite_upgrade_template_recipe");
+        ShapedRecipe TEMPLATE_Recipe = new ShapedRecipe(TEMPLATE_KEY, TEMPLATE);
+        TEMPLATE_Recipe.shape("NIN", "IDI", "NIN");
+        TEMPLATE_Recipe.setIngredient('N', Material.NETHERRACK);
+        TEMPLATE_Recipe.setIngredient('I', Material.NETHERITE_INGOT);
+        TEMPLATE_Recipe.setIngredient('D', Material.DIAMOND);
+        Bukkit.addRecipe(TEMPLATE_Recipe);
+
         plugin.getLogger().info("MoreRecipe Loaded Successfully");
     }
 }

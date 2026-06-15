@@ -58,7 +58,8 @@ public class RecipeMenu {
 
     private static final List<ShpInfo> SHAPED = List.of(
         new ShpInfo(new String[]{" S ", " D ", " B "}, Map.of('S',Material.SPRUCE_SAPLING,'D',Material.DIRT,'B',Material.BONE_MEAL), Material.PODZOL),
-        new ShpInfo(new String[]{"YEY", "ESE", "YEY"}, Map.of('Y',Material.YELLOW_DYE,'E',Material.ENDER_PEARL,'S',Material.STONE), Material.END_STONE));
+        new ShpInfo(new String[]{"YEY", "ESE", "YEY"}, Map.of('Y',Material.YELLOW_DYE,'E',Material.ENDER_PEARL,'S',Material.STONE), Material.END_STONE),
+        new ShpInfo(new String[]{"NIN", "IDI", "NIN"}, Map.of('N',Material.NETHERRACK,'I',Material.NETHERITE_INGOT,'D',Material.DIAMOND), Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE));
 
     private static final List<ShlInfo> SHAPELESS = List.of(
         new ShlInfo(List.of(Material.CHARCOAL), Material.COAL),
@@ -158,6 +159,7 @@ public class RecipeMenu {
             case NETHERRACK -> "§4下界岩"; case SAND -> "§e沙子"; case DIAMOND -> "§b钻石";
             case IRON_NUGGET -> "§f铁粒"; case PURPUR_BLOCK -> "§d紫珀块"; case MYCELIUM -> "§7菌丝土"; case POISONOUS_POTATO -> "§a毒马铃薯"; case SHORT_GRASS -> "§a草";
             case COBBLED_DEEPSLATE -> "§8深板岩圆石"; case END_STONE -> "§e末地石"; case PODZOL -> "§6灰化土";
+            case NETHERITE_UPGRADE_SMITHING_TEMPLATE -> "§d下界合金升级模板";
             default -> "§f" + mat.getKey().getKey();
         };
     }
