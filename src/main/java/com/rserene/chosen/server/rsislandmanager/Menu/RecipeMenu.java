@@ -51,10 +51,15 @@ public class RecipeMenu {
     }
 
     private static final List<SInfo> SMITHING = List.of(
-        new SInfo(Material.AIR, Material.STONE,         Material.SHULKER_BOX,    Material.PURPUR_BLOCK),
-        new SInfo(Material.AIR, Material.GRASS_BLOCK,   Material.BROWN_MUSHROOM, Material.MYCELIUM),
-        new SInfo(Material.AIR, Material.COBBLESTONE,   Material.BLACK_DYE,      Material.COBBLED_DEEPSLATE),
-        new SInfo(Material.AIR, Material.DIRT,          Material.SHORT_GRASS,    Material.GRASS_BLOCK));
+        new SInfo(Material.AIR, Material.DIRT,           Material.SHORT_GRASS,     Material.GRASS_BLOCK),
+        new SInfo(Material.AIR, Material.COBBLESTONE,    Material.BLACK_DYE,       Material.COBBLED_DEEPSLATE),
+        new SInfo(Material.AIR, Material.STONE,          Material.SHULKER_BOX,     Material.PURPUR_BLOCK),
+        new SInfo(Material.AIR, Material.GRASS_BLOCK,    Material.BROWN_MUSHROOM,  Material.MYCELIUM),
+        new SInfo(Material.AIR, Material.RED_MUSHROOM,   Material.BROWN_MUSHROOM,  Material.NETHER_WART),
+        new SInfo(Material.AIR, Material.NETHER_WART,    Material.BLAZE_POWDER,    Material.CRIMSON_FUNGUS),
+        new SInfo(Material.AIR, Material.CRIMSON_FUNGUS, Material.MANGROVE_PROPAGULE, Material.WARPED_FUNGUS),
+        new SInfo(Material.AIR, Material.NETHERRACK,     Material.CRIMSON_FUNGUS,  Material.CRIMSON_NYLIUM),
+        new SInfo(Material.AIR, Material.NETHERRACK,     Material.WARPED_FUNGUS,   Material.WARPED_NYLIUM));
 
     private static final List<ShpInfo> SHAPED = List.of(
         new ShpInfo(new String[]{" S ", " D ", " B "}, Map.of('S',Material.SPRUCE_SAPLING,'D',Material.DIRT,'B',Material.BONE_MEAL), Material.PODZOL),
@@ -68,13 +73,13 @@ public class RecipeMenu {
         new ShlInfo(List.of(Material.GRAVEL, Material.GRAVEL, Material.WOODEN_SHOVEL), Material.FLINT));
 
     private static final List<CkInfo> COOKING = List.of(
-        new CkInfo(Material.POISONOUS_POTATO, Material.DIAMOND,    "营火"),
-        new CkInfo(Material.BONE_BLOCK,   Material.IRON_NUGGET,  "营火"),
-        new CkInfo(Material.REDSTONE,     Material.BLAZE_POWDER, "高炉"),
-        new CkInfo(Material.GLASS,        Material.QUARTZ,       "高炉"),
-        new CkInfo(Material.GRAVEL,       Material.SAND,         "高炉"),
-        new CkInfo(Material.COARSE_DIRT,  Material.SOUL_SOIL,    "烟熏炉"),
-        new CkInfo(Material.COBBLESTONE,  Material.NETHERRACK,   "烟熏炉"));
+        new CkInfo(Material.BONE_BLOCK,       Material.IRON_NUGGET,  "营火"),
+        new CkInfo(Material.POISONOUS_POTATO, Material.DIAMOND,     "营火"),
+        new CkInfo(Material.GRAVEL,           Material.SAND,         "高炉"),
+        new CkInfo(Material.GLASS,            Material.QUARTZ,       "高炉"),
+        new CkInfo(Material.REDSTONE,         Material.BLAZE_POWDER, "高炉"),
+        new CkInfo(Material.COBBLESTONE,      Material.NETHERRACK,   "烟熏炉"),
+        new CkInfo(Material.COARSE_DIRT,      Material.SOUL_SOIL,    "烟熏炉"));
 
     private static final List<StInfo> STONECUT = List.of(
         new StInfo(Material.COBBLESTONE, Material.GRAVEL),
@@ -91,10 +96,10 @@ public class RecipeMenu {
                 p -> buildCombined(p, r)));
         }
         // 杂项
-        for (ShlInfo s : SHAPELESS)
-            ALL.add(Map.entry(item(s.r(), "§7" + name(s.r()), "§7无序合成"), p -> buildShapeless(s)));
         for (CkInfo c : COOKING)
             ALL.add(Map.entry(item(c.r(), "§7" + name(c.r()), "§7" + c.t()), p -> buildCooking(c)));
+        for (ShlInfo s : SHAPELESS)
+            ALL.add(Map.entry(item(s.r(), "§7" + name(s.r()), "§7无序合成"), p -> buildShapeless(s)));
         // 方块
         for (SInfo s : SMITHING)
             ALL.add(Map.entry(item(s.r(), "§d" + name(s.r()), "§7锻造台"), p -> buildSmithing(s)));
@@ -124,7 +129,7 @@ public class RecipeMenu {
                     "§7" + name(cur.b()) + " + " + name(cur.a())));
                 setSlot(inv, 4, Material.SMITHING_TABLE,
                     "§6" + name(result) + " §7(§e" + (cnt + 1) + "§7/§e" + list.size() + "§7)",
-                    "§7原料自动切换");
+                    "§7任意一种锭加对应染料");
             }
         };
         task.runTaskTimer(RSIslandManager.getPlugin(), 20L, 20L);
@@ -155,11 +160,14 @@ public class RecipeMenu {
             case BLAZE_ROD -> "§6烈焰棒"; case PRISMARINE_SHARD -> "§b海晶碎片"; case PURPLE_DYE -> "§d紫色染料";
             case AMETHYST_SHARD -> "§d紫水晶碎片"; case GRAVEL -> "§7砂砾"; case WOODEN_SHOVEL -> "§6木锹";
             case FLINT -> "§7燧石"; case REDSTONE -> "§c红石"; case GLASS -> "§f玻璃"; case QUARTZ -> "§f石英";
-            case COARSE_DIRT -> "§7粗泥"; case SOUL_SOIL -> "§8灵魂土"; case SOUL_SAND -> "§6灵魂沙";
+            case COARSE_DIRT -> "§7砂土"; case SOUL_SOIL -> "§8灵魂土"; case SOUL_SAND -> "§6灵魂沙";
             case NETHERRACK -> "§4下界岩"; case SAND -> "§e沙子"; case DIAMOND -> "§b钻石";
             case IRON_NUGGET -> "§f铁粒"; case PURPUR_BLOCK -> "§d紫珀块"; case MYCELIUM -> "§7菌丝土"; case POISONOUS_POTATO -> "§a毒马铃薯"; case SHORT_GRASS -> "§a草";
             case COBBLED_DEEPSLATE -> "§8深板岩圆石"; case END_STONE -> "§e末地石"; case PODZOL -> "§6灰化土";
             case NETHERITE_UPGRADE_SMITHING_TEMPLATE -> "§d下界合金升级模板";
+            case NETHER_WART -> "§4下界疣"; case CRIMSON_FUNGUS -> "§c绯红菌"; case WARPED_FUNGUS -> "§3诡异菌";
+            case CRIMSON_NYLIUM -> "§c绯红菌岩"; case WARPED_NYLIUM -> "§3诡异菌岩";
+            case RED_MUSHROOM -> "§c红色蘑菇"; case MANGROVE_PROPAGULE -> "§2红树胎生苗";
             default -> "§f" + mat.getKey().getKey();
         };
     }
@@ -239,9 +247,9 @@ public class RecipeMenu {
         if (list == null || list.isEmpty()) return buildMain();
         SInfo cur = list.get(0);
 
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造 " + name(result) + " ]"));
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造 " + name(result) + " §8]"));
         fill(inv);
-        setSlot(inv, 4, Material.SMITHING_TABLE, "§6" + name(result) + " §7(§e1§7/§e" + list.size() + "§7)", "§7原料自动切换");
+        setSlot(inv, 4, Material.SMITHING_TABLE, "§6" + name(result) + " §7(§e1§7/§e" + list.size() + "§7)", "§7任意一种锭加对应染料");
         inv.setItem(20, mkItem(cur.t(), "§7模板: " + name(cur.t()), ""));
         inv.setItem(21, mkItem(Material.GREEN_STAINED_GLASS_PANE, "§a+", ""));
         inv.setItem(22, mkItem(cur.b(), "§6基底: " + name(cur.b()), "§7放入基底栏"));
@@ -259,7 +267,7 @@ public class RecipeMenu {
 
     // ===================== 普通详情 =====================
     public static Inventory buildSmithing(SInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造台 ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造台 §8]")); fill(inv);
         setSlot(inv, 4, Material.SMITHING_TABLE, "§6锻造台合成", "§7将材料放入锻造台对应栏位");
         inv.setItem(20, mkItem(info.t(), "§7模板: " + name(info.t()), ""));
         inv.setItem(21, mkItem(Material.GREEN_STAINED_GLASS_PANE, "§a+", ""));
@@ -273,7 +281,7 @@ public class RecipeMenu {
     }
 
     public static Inventory buildShaped(ShpInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6有序合成 ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6有序合成 §8]")); fill(inv);
         setSlot(inv, 4, Material.CRAFTING_TABLE, "§6有序合成", "§7按固定图案在工作台摆放");
         int[][] gs = {{19,20,21},{28,29,30},{37,38,39}};
         for (int r = 0; r < 3; r++) {
@@ -291,7 +299,7 @@ public class RecipeMenu {
     }
 
     public static Inventory buildShapeless(ShlInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6无序合成 ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6无序合成 §8]")); fill(inv);
         setSlot(inv, 4, Material.CRAFTING_TABLE, "§6无序合成", "§7材料随意摆放在工作台即可");
         int[] sl = {19,20,21,28,29,30};
         for (int i = 0; i < info.i().size() && i < sl.length; i++) inv.setItem(sl[i], mkItem(info.i().get(i), "§7" + name(info.i().get(i)), ""));
@@ -302,7 +310,7 @@ public class RecipeMenu {
     }
 
     public static Inventory buildCooking(CkInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6" + info.t() + " ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6" + info.t() + " §8]")); fill(inv);
         Material icon = switch (info.t()) { case "营火" -> Material.CAMPFIRE; case "高炉" -> Material.BLAST_FURNACE; case "烟熏炉" -> Material.SMOKER; default -> Material.FURNACE; };
         setSlot(inv, 4, icon, "§6" + info.t() + "烧炼", "§7将材料放入" + info.t());
         inv.setItem(20, mkItem(info.i(), "§7输入: " + name(info.i()), "§7放入" + info.t() + "上格"));
@@ -316,7 +324,7 @@ public class RecipeMenu {
     }
 
     public static Inventory buildStonecut(StInfo info) {
-        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6切石机 ]")); fill(inv);
+        Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6切石机 §8]")); fill(inv);
         setSlot(inv, 4, Material.STONECUTTER, "§6切石机加工", "§7将材料放入切石机");
         inv.setItem(20, mkItem(info.i(), "§7输入: " + name(info.i()), "§7放入切石机"));
         inv.setItem(22, mkItem(Material.LIME_STAINED_GLASS_PANE, "§a>", ""));

@@ -322,6 +322,51 @@ public class MoreRecipe {
         TEMPLATE_Recipe.setIngredient('D', Material.DIAMOND);
         Bukkit.addRecipe(TEMPLATE_Recipe);
 
+        SmithingTransformRecipe NETHER_WART = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "nether_wart_recipe"),
+            new ItemStack(Material.NETHER_WART),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.RED_MUSHROOM),
+            new RecipeChoice.MaterialChoice(Material.BROWN_MUSHROOM)
+        );
+        Bukkit.addRecipe(NETHER_WART);
+
+        SmithingTransformRecipe CRIMSON_FUNGUS = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "crimson_fungus_recipe"),
+            new ItemStack(Material.CRIMSON_FUNGUS),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.NETHER_WART),
+            new RecipeChoice.MaterialChoice(Material.BLAZE_POWDER)
+        );
+        Bukkit.addRecipe(CRIMSON_FUNGUS);
+
+        SmithingTransformRecipe WARPED_FUNGUS = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "warped_fungus_recipe"),
+            new ItemStack(Material.WARPED_FUNGUS),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.CRIMSON_FUNGUS),
+            new RecipeChoice.MaterialChoice(Material.MANGROVE_PROPAGULE)
+        );
+        Bukkit.addRecipe(WARPED_FUNGUS);
+
+        SmithingTransformRecipe CRIMSON_NYLIUM = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "crimson_nylium_recipe"),
+            new ItemStack(Material.CRIMSON_NYLIUM),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.NETHERRACK),
+            new RecipeChoice.MaterialChoice(Material.CRIMSON_FUNGUS)
+        );
+        Bukkit.addRecipe(CRIMSON_NYLIUM);
+
+        SmithingTransformRecipe WARPED_NYLIUM = new SmithingTransformRecipe(
+            new NamespacedKey(plugin, "warped_nylium_recipe"),
+            new ItemStack(Material.WARPED_NYLIUM),
+            RecipeChoice.empty(),
+            new RecipeChoice.MaterialChoice(Material.NETHERRACK),
+            new RecipeChoice.MaterialChoice(Material.WARPED_FUNGUS)
+        );
+        Bukkit.addRecipe(WARPED_NYLIUM);
+
         plugin.getLogger().info("MoreRecipe Loaded Successfully");
     }
 }

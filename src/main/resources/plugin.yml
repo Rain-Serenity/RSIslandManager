@@ -1,5 +1,5 @@
 name: RSIslandManager
-version: 5.0.0
+version: 5.0.2
 main: com.rserene.chosen.server.rsislandmanager.RSIslandManager
 api-version: 26.1
 folia-supported: true
