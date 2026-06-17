@@ -8,14 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
-/**
- * 合成配方菜单交互 & 自动循环管理
- */
 public class MainMenuListener implements Listener {
 
     private static final Component TITLE_COMP = Component.text(RecipeMenu.TITLE);
+    private static final int SLOT_PREV = 45;
+    private static final int SLOT_NEXT = 52;
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -30,8 +28,20 @@ public class MainMenuListener implements Listener {
         if (event.getCurrentItem().getType() == Material.AIR) return;
 
         if (isMain) {
-            if (event.getSlot() == RecipeMenu.SLOT_CLOSE) { player.closeInventory(); return; }
-            Inventory detail = RecipeMenu.getDetail(event.getSlot(), player);
+            int slot = event.getSlot();
+            if (slot == RecipeMenu.SLOT_CLOSE) { player.closeInventory(); return; }
+            if (slot == SLOT_PREV) {
+                int pg = RecipeMenu.getPage(player) - 1;
+                if (pg >= 0) { RecipeMenu.setPage(player, pg); player.openInventory(RecipeMenu.buildMain(pg)); }
+                return;
+            }
+            if (slot == SLOT_NEXT) {
+                int pg = RecipeMenu.getPage(player) + 1;
+                int last = (RecipeMenu.ALL_SIZE + RecipeMenu.ITEMS_PER_PAGE - 1) / RecipeMenu.ITEMS_PER_PAGE - 1;
+                if (pg <= last) { RecipeMenu.setPage(player, pg); player.openInventory(RecipeMenu.buildMain(pg)); }
+                return;
+            }
+            Inventory detail = RecipeMenu.getDetail(slot, player, RecipeMenu.getPage(player));
             if (detail != null) player.openInventory(detail);
             return;
         }
@@ -40,7 +50,7 @@ public class MainMenuListener implements Listener {
             int slot = event.getSlot();
             if (slot == RecipeMenu.SLOT_BACK) {
                 RecipeMenu.stopCycling(player);
-                player.openInventory(RecipeMenu.buildMain());
+                player.openInventory(RecipeMenu.buildMain(RecipeMenu.getPage(player)));
                 return;
             }
             if (slot == RecipeMenu.SLOT_CLOSE) {
@@ -53,7 +63,6 @@ public class MainMenuListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player player)) return;
-        // 只有关闭详情页（含 §8[ ）才清理循环任务
         if (event.getView().title().toString().contains("§8[")) {
             RecipeMenu.clearState(player);
         }

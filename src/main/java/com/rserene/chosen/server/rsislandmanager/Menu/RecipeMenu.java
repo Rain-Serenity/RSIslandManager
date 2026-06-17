@@ -16,9 +16,12 @@ import java.util.function.Function;
 public class RecipeMenu {
 
     public static final String TITLE = "§7额外合成配方";
+    public static final int ITEMS_PER_PAGE = 21;
 
     public static final int SLOT_BACK  = 45;
     public static final int SLOT_CLOSE = 53;
+
+    private static final Map<UUID, Integer> CURRENT_PAGE = new HashMap<>();
 
     public record SInfo(Material t, Material b, Material a, Material r) {}
     public record ShpInfo(String[] s, Map<Character, Material> i, Material r) {}
@@ -88,7 +91,8 @@ public class RecipeMenu {
         new StInfo(Material.SOUL_SOIL,   Material.SOUL_SAND));
 
     private static final List<Map.Entry<ItemStack, Function<Player, Inventory>>> ALL = new ArrayList<>();
-    static { buildAll(); }
+    public static final int ALL_SIZE;
+    static { buildAll(); ALL_SIZE = ALL.size(); }
 
     private static void buildAll() {
         // 锭
@@ -223,32 +227,58 @@ public class RecipeMenu {
         i.setItemMeta(m); return i;
     }
 
-    // ===================== 主菜单 =====================
-    public static Inventory buildMain() {
+    // ===================== 主菜单（分页） =====================
+    public static Inventory buildMain(int page) {
         Inventory inv = Bukkit.createInventory(null, 54, Component.text(TITLE));
-        fill(inv);
-        setSlot(inv, 4, Material.KNOWLEDGE_BOOK, "§6自定义合成配方", "§7共 " + ALL.size() + " 个配方");
-        int max = Math.min(ALL.size(), 28);
-        for (int i = 0; i < max; i++) {
-            int r = i / 7, c = i % 7;
+        fill3(inv);
+        int start = page * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, ALL.size());
+        for (int i = start; i < end; i++) {
+            int local = i - start;
+            int r = local / 7, c = local % 7;
             inv.setItem(9 + r * 9 + 1 + c, ALL.get(i).getKey());
         }
-        setSlot(inv, SLOT_CLOSE, Material.BARRIER, "§c关闭", ""); return inv;
+        int totalPages = (ALL.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        setSlot(inv, 4, Material.KNOWLEDGE_BOOK, "§6自定义合成配方",
+            "§7第 " + (page + 1) + " / " + totalPages + " 页 · 共 " + ALL.size() + " 个配方");
+        if (page > 0)
+            setSlot(inv, 45, Material.ARROW, "§7← 上一页", "");
+        if (page < totalPages - 1)
+            setSlot(inv, 52, Material.ARROW, "§7下一页 →", "");
+        setSlot(inv, SLOT_CLOSE, Material.BARRIER, "§c关闭", "");
+        return inv;
     }
 
-    public static Inventory getDetail(int slot, Player player) {
-        if (slot < 9 || slot >= 45) return null;
+    public static Inventory getDetail(int slot, Player player, int page) {
+        if (slot < 9 || slot >= 36) return null;
         int c = slot % 9;
         if (c == 0 || c == 8) return null;
-        int idx = ((slot - 9) / 9) * 7 + (c - 1);
+        int localIdx = ((slot - 9) / 9) * 7 + (c - 1);
+        int idx = page * ITEMS_PER_PAGE + localIdx;
         if (idx < 0 || idx >= ALL.size()) return null;
         return ALL.get(idx).getValue().apply(player);
+    }
+
+    private static void fill3(Inventory inv) {
+        ItemStack p = pane();
+        for (int i = 0; i < 54; i++) {
+            int r = i / 9, c = i % 9;
+            if (r == 0 || r == 4 || r == 5 || c == 0 || c == 8) inv.setItem(i, p);
+        }
+    }
+
+    public static int getPage(Player player) {
+        return CURRENT_PAGE.getOrDefault(player.getUniqueId(), 0);
+    }
+
+    public static void setPage(Player player, int page) {
+        CURRENT_PAGE.put(player.getUniqueId(), page);
     }
 
     // ===================== 合并锻造（自动循环） =====================
     public static Inventory buildCombined(Player player, Material result) {
         List<SInfo> list = COMBINED.get(result);
-        if (list == null || list.isEmpty()) return buildMain();
+        if (list == null || list.isEmpty()) return buildMain(getPage(player));
         SInfo cur = list.get(0);
 
         Inventory inv = Bukkit.createInventory(null, 54, Component.text("§8[ §6锻造 " + name(result) + " §8]"));
@@ -339,6 +369,7 @@ public class RecipeMenu {
 
     // ===================== 入口 =====================
     public static void open(Player player) {
-        player.openInventory(buildMain());
+        CURRENT_PAGE.put(player.getUniqueId(), 0);
+        player.openInventory(buildMain(0));
     }
 }
