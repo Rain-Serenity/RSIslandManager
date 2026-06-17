@@ -146,6 +146,14 @@ public final class RSIslandManager extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+        if (this.getConfig().getBoolean("SunflowerBoneMeal")) {
+            try {
+                new SunflowerBoneMeal();
+                getLogger().info("Enabled sunflower bone meal.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (this.getConfig().getBoolean("SetGameRule")) {
             try {
 

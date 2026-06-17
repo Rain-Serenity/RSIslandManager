@@ -367,6 +367,23 @@ public class MoreRecipe {
         );
         Bukkit.addRecipe(WARPED_NYLIUM);
 
+        ItemStack GILDED_BLACKSTONE = new ItemStack(Material.GILDED_BLACKSTONE);
+        NamespacedKey GILDED_BLACKSTONE_KEY = new NamespacedKey(plugin, "gilded_blackstone_recipe");
+        ShapedRecipe GILDED_BLACKSTONE_Recipe = new ShapedRecipe(GILDED_BLACKSTONE_KEY, GILDED_BLACKSTONE);
+        GILDED_BLACKSTONE_Recipe.shape("GGG", "GBG", "GGG");
+        GILDED_BLACKSTONE_Recipe.setIngredient('G', Material.GOLD_INGOT);
+        GILDED_BLACKSTONE_Recipe.setIngredient('B', Material.BLACKSTONE);
+        Bukkit.addRecipe(GILDED_BLACKSTONE_Recipe);
+
+        CampfireRecipe WitherSkull = new CampfireRecipe(
+            new NamespacedKey(plugin, "wither_skull_recipe"),
+            new ItemStack(Material.WITHER_SKELETON_SKULL),
+            Material.SKELETON_SKULL,
+            (float) 0.3,
+            300
+        );
+        Bukkit.addRecipe(WitherSkull);
+
         plugin.getLogger().info("MoreRecipe Loaded Successfully");
     }
 }

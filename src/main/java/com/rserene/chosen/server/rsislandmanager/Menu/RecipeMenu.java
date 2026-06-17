@@ -64,7 +64,8 @@ public class RecipeMenu {
     private static final List<ShpInfo> SHAPED = List.of(
         new ShpInfo(new String[]{" S ", " D ", " B "}, Map.of('S',Material.SPRUCE_SAPLING,'D',Material.DIRT,'B',Material.BONE_MEAL), Material.PODZOL),
         new ShpInfo(new String[]{"YEY", "ESE", "YEY"}, Map.of('Y',Material.YELLOW_DYE,'E',Material.ENDER_PEARL,'S',Material.STONE), Material.END_STONE),
-        new ShpInfo(new String[]{"NIN", "IDI", "NIN"}, Map.of('N',Material.NETHERRACK,'I',Material.NETHERITE_INGOT,'D',Material.DIAMOND), Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE));
+        new ShpInfo(new String[]{"NIN", "IDI", "NIN"}, Map.of('N',Material.NETHERRACK,'I',Material.NETHERITE_INGOT,'D',Material.DIAMOND), Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+        new ShpInfo(new String[]{"GGG", "GBG", "GGG"}, Map.of('G',Material.GOLD_INGOT,'B',Material.BLACKSTONE), Material.GILDED_BLACKSTONE));
 
     private static final List<ShlInfo> SHAPELESS = List.of(
         new ShlInfo(List.of(Material.CHARCOAL), Material.COAL),
@@ -75,6 +76,7 @@ public class RecipeMenu {
     private static final List<CkInfo> COOKING = List.of(
         new CkInfo(Material.BONE_BLOCK,       Material.IRON_NUGGET,  "营火"),
         new CkInfo(Material.POISONOUS_POTATO, Material.DIAMOND,     "营火"),
+        new CkInfo(Material.SKELETON_SKULL,   Material.WITHER_SKELETON_SKULL, "营火"),
         new CkInfo(Material.GRAVEL,           Material.SAND,         "高炉"),
         new CkInfo(Material.GLASS,            Material.QUARTZ,       "高炉"),
         new CkInfo(Material.REDSTONE,         Material.BLAZE_POWDER, "高炉"),
@@ -168,6 +170,8 @@ public class RecipeMenu {
             case NETHER_WART -> "§4下界疣"; case CRIMSON_FUNGUS -> "§c绯红菌"; case WARPED_FUNGUS -> "§3诡异菌";
             case CRIMSON_NYLIUM -> "§c绯红菌岩"; case WARPED_NYLIUM -> "§3诡异菌岩";
             case RED_MUSHROOM -> "§c红色蘑菇"; case MANGROVE_PROPAGULE -> "§2红树胎生苗";
+            case GILDED_BLACKSTONE -> "§6镶金黑石"; case BLACKSTONE -> "§8黑石";
+            case SKELETON_SKULL -> "§f骷髅头颅"; case WITHER_SKELETON_SKULL -> "§8凋零骷髅头颅";
             default -> "§f" + mat.getKey().getKey();
         };
     }
