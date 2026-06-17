@@ -16,9 +16,9 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.entity.EntityDismountEvent;
 import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +27,8 @@ import java.util.UUID;
 public class MoreChairs implements Listener {
 
     public MoreChairs() {
-        Bukkit.getPluginManager().registerEvents(this, JavaPlugin.getPlugin(RSIslandManager.class));
-        Bukkit.getScheduler().runTaskTimer(JavaPlugin.getPlugin(RSIslandManager.class), () -> {
+        Bukkit.getPluginManager().registerEvents(this, RSIslandManager.getPlugin());
+        Scheduler.timer(() -> {
             map.forEach((uuid, armorStand) -> {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) {
@@ -64,11 +64,11 @@ public class MoreChairs implements Listener {
         }
         if (event.isSneaking()) {
             sneakTime.put(event.getPlayer().getUniqueId(), currentTimeMillis);
-            Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(RSIslandManager.class), () -> {
-                if (sneakTime.getOrDefault(event.getPlayer().getUniqueId(), 0L).equals(currentTimeMillis)) {
-                    Location location = event.getPlayer().getLocation();
+            Scheduler.playerLater(event.getPlayer(), p -> {
+                if (sneakTime.getOrDefault(p.getUniqueId(), 0L).equals(currentTimeMillis)) {
+                    Location location = p.getLocation();
                     Sound sound = Sound.ITEM_ARMOR_EQUIP_TURTLE;
-                    event.getPlayer().playSound(location, sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    p.playSound(location, sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
             }, 20L);
             return;

@@ -1,5 +1,7 @@
 package com.rserene.chosen.server.rsislandmanager.Settings;
 
+import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -17,8 +19,6 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import static org.bukkit.Material.PURPUR_BLOCK;
 
 public class ShulkerRespawn implements Listener {
     public ShulkerRespawn() {
-        Bukkit.getPluginManager().registerEvents(this, JavaPlugin.getPlugin(RSIslandManager.class));
+        Bukkit.getPluginManager().registerEvents(this, RSIslandManager.getPlugin());
 
     }
 
@@ -144,7 +144,7 @@ public class ShulkerRespawn implements Listener {
         }
         Block shulkerBox = event.getBlock().getRelative(((Dispenser) event.getBlock().getBlockData()).getFacing());
         if (event.getItem().getType().name().toLowerCase(Locale.ROOT).contains("shulker_box")) {
-            Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(RSIslandManager.class), () -> {
+            Scheduler.run(() -> {
                 stainShulkerBox(shulkerBox, shulkerBox);
 
             });

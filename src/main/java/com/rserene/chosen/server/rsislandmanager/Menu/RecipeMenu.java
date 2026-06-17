@@ -1,6 +1,6 @@
 package com.rserene.chosen.server.rsislandmanager.Menu;
 
-import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.function.Function;
@@ -16,7 +15,7 @@ import java.util.function.Function;
 public class RecipeMenu {
 
     public static final String TITLE = "§7额外合成配方";
-    public static final int ITEMS_PER_PAGE = 21;
+    public static final int ITEMS_PER_PAGE = 28;
 
     public static final int SLOT_BACK  = 45;
     public static final int SLOT_CLOSE = 53;
@@ -116,34 +115,30 @@ public class RecipeMenu {
     }
 
     // ===================== 自动循环 =====================
-    private static final Map<UUID, BukkitRunnable> RUNNERS = new HashMap<>();
+    private static final Map<UUID, Scheduler.Task> RUNNERS = new HashMap<>();
 
     public static void startCycling(Player player, Material result, Inventory inv) {
         stopCycling(player);
-        BukkitRunnable task = new BukkitRunnable() {
-            private int cnt = 0;
-            @Override
-            public void run() {
-                if (!player.isOnline()) { cancel(); return; }
-                List<SInfo> list = COMBINED.get(result);
-                if (list == null || list.isEmpty()) { cancel(); return; }
-                cnt = (cnt + 1) % list.size();
-                SInfo cur = list.get(cnt);
-                inv.setItem(22, mkItem(cur.b(), "§6基底: " + name(cur.b()), "§7放入基底栏"));
-                inv.setItem(24, mkItem(cur.a(), "§6附加: " + name(cur.a()), "§7放入附加栏"));
-                inv.setItem(40, mkItem(Material.PAPER, "§7配方 " + (cnt + 1) + " / " + list.size(),
-                    "§7" + name(cur.b()) + " + " + name(cur.a())));
-                setSlot(inv, 4, Material.SMITHING_TABLE,
-                    "§6" + name(result) + " §7(§e" + (cnt + 1) + "§7/§e" + list.size() + "§7)",
-                    "§7任意一种锭加对应染料");
-            }
-        };
-        task.runTaskTimer(RSIslandManager.getPlugin(), 20L, 20L);
+        int[] cnt = {0};
+        Scheduler.Task task = Scheduler.playerTimer(player, p -> {
+            if (!p.isOnline()) { return; }
+            List<SInfo> list = COMBINED.get(result);
+            if (list == null || list.isEmpty()) { return; }
+            cnt[0] = (cnt[0] + 1) % list.size();
+            SInfo cur = list.get(cnt[0]);
+            inv.setItem(22, mkItem(cur.b(), "§6基底: " + name(cur.b()), "§7放入基底栏"));
+            inv.setItem(24, mkItem(cur.a(), "§6附加: " + name(cur.a()), "§7放入附加栏"));
+            inv.setItem(40, mkItem(Material.PAPER, "§7配方 " + (cnt[0] + 1) + " / " + list.size(),
+                "§7" + name(cur.b()) + " + " + name(cur.a())));
+            setSlot(inv, 4, Material.SMITHING_TABLE,
+                "§6" + name(result) + " §7(§e" + (cnt[0] + 1) + "§7/§e" + list.size() + "§7)",
+                "§7任意一种锭加对应染料");
+        }, 20L, 20L);
         RUNNERS.put(player.getUniqueId(), task);
     }
 
     public static void stopCycling(Player player) {
-        BukkitRunnable t = RUNNERS.remove(player.getUniqueId());
+        Scheduler.Task t = RUNNERS.remove(player.getUniqueId());
         if (t != null) { try { t.cancel(); } catch (Exception ignored) {} }
     }
 
@@ -230,7 +225,7 @@ public class RecipeMenu {
     // ===================== 主菜单（分页） =====================
     public static Inventory buildMain(int page) {
         Inventory inv = Bukkit.createInventory(null, 54, Component.text(TITLE));
-        fill3(inv);
+        fillPage(inv);
         int start = page * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, ALL.size());
         for (int i = start; i < end; i++) {
@@ -241,16 +236,14 @@ public class RecipeMenu {
         int totalPages = (ALL.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
         setSlot(inv, 4, Material.KNOWLEDGE_BOOK, "§6自定义合成配方",
             "§7第 " + (page + 1) + " / " + totalPages + " 页 · 共 " + ALL.size() + " 个配方");
-        if (page > 0)
-            setSlot(inv, 45, Material.ARROW, "§7← 上一页", "");
-        if (page < totalPages - 1)
-            setSlot(inv, 52, Material.ARROW, "§7下一页 →", "");
+        if (page > 0) setSlot(inv, 36, Material.ARROW, "§7← 上一页", "");
+        if (page < totalPages - 1) setSlot(inv, 44, Material.ARROW, "§7下一页 →", "");
         setSlot(inv, SLOT_CLOSE, Material.BARRIER, "§c关闭", "");
         return inv;
     }
 
     public static Inventory getDetail(int slot, Player player, int page) {
-        if (slot < 9 || slot >= 36) return null;
+        if (slot < 9 || slot >= 45) return null;
         int c = slot % 9;
         if (c == 0 || c == 8) return null;
         int localIdx = ((slot - 9) / 9) * 7 + (c - 1);
@@ -259,12 +252,14 @@ public class RecipeMenu {
         return ALL.get(idx).getValue().apply(player);
     }
 
-    private static void fill3(Inventory inv) {
+    private static void fillPage(Inventory inv) {
         ItemStack p = pane();
-        for (int i = 0; i < 54; i++) {
-            int r = i / 9, c = i % 9;
-            if (r == 0 || r == 4 || r == 5 || c == 0 || c == 8) inv.setItem(i, p);
+        for (int c = 0; c < 9; c++) inv.setItem(c, p);
+        for (int r = 1; r <= 4; r++) {
+            inv.setItem(r * 9, p);
+            inv.setItem(r * 9 + 8, p);
         }
+        for (int c = 0; c < 9; c++) inv.setItem(45 + c, p);
     }
 
     public static int getPage(Player player) {

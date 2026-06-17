@@ -12,8 +12,8 @@ import org.bukkit.inventory.Inventory;
 public class MainMenuListener implements Listener {
 
     private static final Component TITLE_COMP = Component.text(RecipeMenu.TITLE);
-    private static final int SLOT_PREV = 45;
-    private static final int SLOT_NEXT = 52;
+    private static final int SLOT_PREV = 36;
+    private static final int SLOT_NEXT = 44;
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {

@@ -1,5 +1,6 @@
 package com.rserene.chosen.server.rsislandmanager.Settings;
 
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -10,9 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
 
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class SlimeChunk {
         final int z = player.getLocation().getChunk().getZ();
 
         // 延迟 30 秒后恢复原样
-        Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(RSIslandManager.class), () -> {
+        Scheduler.later(() -> {
             if (!player.isOnline()) return;
             for (int i = x - 4; i < x + 5; i++) {
                 for (int j = z - 4; j < z + 5; j++) {
