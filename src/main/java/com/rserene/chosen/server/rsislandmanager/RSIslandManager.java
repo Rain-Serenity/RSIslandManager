@@ -1,13 +1,14 @@
 package com.rserene.chosen.server.rsislandmanager;
 
-import org.bukkit.*;
 import com.rserene.chosen.server.rsislandmanager.Menu.*;
 import com.rserene.chosen.server.rsislandmanager.Command.RimCommand;
 import com.rserene.chosen.server.rsislandmanager.Tips.Synthesis;
 import com.rserene.chosen.server.rsislandmanager.Tips.SynthesisCommand;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.rserene.chosen.server.rsislandmanager.Recipe.MoreRecipe;
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 import com.rserene.chosen.server.rsislandmanager.Settings.*;
+import org.bukkit.*;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
@@ -156,11 +157,12 @@ public final class RSIslandManager extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("SetGameRule")) {
             try {
-
-                for (World world : Bukkit.getWorlds()) {
-                    world.setGameRule(GameRules.KEEP_INVENTORY, true);
-                    world.setDifficulty(Difficulty.HARD);
-                }
+                Scheduler.run(() -> {
+                    for (World world : Bukkit.getWorlds()) {
+                        world.setGameRule(GameRules.KEEP_INVENTORY, true);
+                        world.setDifficulty(Difficulty.HARD);
+                    }
+                });
                 getLogger().info("SetGameRule Successfully");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -191,6 +193,6 @@ public final class RSIslandManager extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.clearRecipes();
+        if (!Scheduler.isFolia()) Bukkit.clearRecipes();
     }
 }

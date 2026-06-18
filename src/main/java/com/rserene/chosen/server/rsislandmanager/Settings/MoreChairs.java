@@ -36,7 +36,7 @@ public class MoreChairs implements Listener {
                 }
                 armorStand.setRotation(player.getLocation().getYaw(), player.getLocation().getPitch());
             });
-        }, 0, 1);
+        }, 1, 1);
     }
 
     private static final Map<UUID, ArmorStand> map = new HashMap<>();

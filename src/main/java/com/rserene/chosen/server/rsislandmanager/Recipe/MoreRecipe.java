@@ -5,11 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
 import com.rserene.chosen.server.rsislandmanager.RSIslandManager;
+import com.rserene.chosen.server.rsislandmanager.Scheduler;
 
 public class MoreRecipe {
 
     public static void register(RSIslandManager plugin) {
-        Bukkit.resetRecipes();
+        if (!Scheduler.isFolia()) Bukkit.resetRecipes();
 
         SmithingTransformRecipe Iron_NETHER = new SmithingTransformRecipe(
             new NamespacedKey(plugin, "Ironj_recipe"),
