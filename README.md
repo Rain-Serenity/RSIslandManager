@@ -1,2 +1,2 @@
-# SkydomIslandManager
-**This is the empty island plugin for [Minecraft Skydom Server](https://www.Skydom.org/)**
+# RSIslandManager
+**This is the empty island plugin for [Minecraft Rain Serenity Server](https://www.RSerene.com/)**
